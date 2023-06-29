@@ -1,6 +1,8 @@
 package com.tutorial.crud.security.entity;
 
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,7 @@ import java.util.Set;
 @Table(name = "usuario")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

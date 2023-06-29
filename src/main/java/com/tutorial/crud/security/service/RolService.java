@@ -1,4 +1,4 @@
-package com.tutorial.crud.serivice;
+package com.tutorial.crud.security.service;
 
 import com.tutorial.crud.repository.RolRepository;
 import com.tutorial.crud.security.entity.Rol;

@@ -1,6 +1,6 @@
 package com.tutorial.crud.security.jwt;
 
-import com.tutorial.crud.serivice.UserDetailsServiceImpl;
+import com.tutorial.crud.security.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         try{
-            String token = getTonken(req);
+            String token = getToken(req);
             if(token != null && jwtProvider.validateToken(token)){
                 String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(nombreUsuario);
@@ -42,10 +42,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(req, res);
     }
 
-    private String getTonken(HttpServletRequest request){
+    private String getToken(HttpServletRequest request){
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer"))
-            return header.replace("Bearer", "");
+            return header.replace("Bearer ", "");
         return null;
     }
 }

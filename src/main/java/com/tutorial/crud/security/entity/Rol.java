@@ -3,6 +3,7 @@ package com.tutorial.crud.security.entity;
 import javax.validation.constraints.NotNull;
 
 import com.tutorial.crud.security.enums.RolNombre;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Table(name = "rol")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Rol implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

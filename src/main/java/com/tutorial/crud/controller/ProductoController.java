@@ -3,7 +3,7 @@ package com.tutorial.crud.controller;
 import com.tutorial.crud.dto.Mensaje;
 import com.tutorial.crud.dto.ProductoDto;
 import com.tutorial.crud.entity.Producto;
-import com.tutorial.crud.serivice.ProductoService;
+import com.tutorial.crud.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/products")
 @CrossOrigin(origins = "*")
 public class ProductoController {
 
@@ -43,6 +43,8 @@ public class ProductoController {
         Producto producto = productoService.getByNombre(nombre).get();
         return new ResponseEntity<Producto>(producto, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<Mensaje> create(@RequestBody ProductoDto productoDto){
         if(StringUtils.isBlank(productoDto.getNombre()))
@@ -56,6 +58,7 @@ public class ProductoController {
         return new ResponseEntity<Mensaje>(new Mensaje("Producto creado con exito"), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Mensaje> update(@PathVariable("id")int id, @RequestBody ProductoDto productoDto){
         if(!productoService.existsById(id))
@@ -63,9 +66,9 @@ public class ProductoController {
         if(productoService.existsByNombre(productoDto.getNombre()) && productoService.getByNombre(productoDto.getNombre()).get().getId() != id)
             return new ResponseEntity<Mensaje>(new Mensaje("El nombre " + productoDto.getNombre() + " ya se encuentra registrado"), HttpStatus.BAD_REQUEST);
         if(StringUtils.isBlank(productoDto.getNombre()))
-            return new ResponseEntity<Mensaje>(new Mensaje("El nombre del produucto es obligatorio"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Mensaje>(new Mensaje("El nombre del producto es obligatorio"), HttpStatus.BAD_REQUEST);
         if(productoDto.getPrecio()==null || productoDto.getPrecio()<0 )
-            return new ResponseEntity<Mensaje>(new Mensaje("El precio debe ser major que 0.0"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Mensaje>(new Mensaje("El precio debe ser mayor que 0.0"), HttpStatus.BAD_REQUEST);
         Producto producto = productoService.getOne(id).get();
         producto.setNombre(productoDto.getNombre());
         producto.setPrecio(productoDto.getPrecio());

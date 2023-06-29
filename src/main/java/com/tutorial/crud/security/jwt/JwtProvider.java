@@ -52,7 +52,7 @@ public class JwtProvider{
      * @return el username en el token
      */
     public String getNombreUsuarioFromToken(String token){
-        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJwt(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().getSubject();
     }
 
     /**
